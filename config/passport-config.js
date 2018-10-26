@@ -12,13 +12,18 @@ const params = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 }
 
-passport.serializeUser((user, done) => done(null, user.id))
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
 
-passport.deserializeUser((id, done) => User.findById(id, (err, user) => done(err, user)))
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => done(err, user))
+})
 
 passport.use(
   'loginUsers',
   new LocalStrategy((login, password, done) => {
+    console.log(login)
     User.findOne({login})
       .then(user => {
         if (user.validPassword(password)) {
@@ -36,8 +41,14 @@ passport.use(
 
 var strategy = new Strategy(params, ({id}, done) => {
   const User = mongoose.model('login')
+  console.log('from passport', id)
   User.find({id})
-    .then(({id}) => (id ? done(null, {id}) : done(new Error('User not found'), null)))
+    .then(
+      user =>
+        user
+          ? done(null, {id: user.id, ...user})
+          : done(new Error('User not found'), null),
+    )
     .catch(err => {
       console.log(err)
       done(err)
