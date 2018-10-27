@@ -14,6 +14,7 @@ router.post('/userData', auth, userData.updateInfo)
 
 router.post('/orders', auth, orders.addOrder)
 router.post('/guestOrders', orders.addGuestOrder)
+router.post('/confirmOrder', orders.confirmOrder)
 
 
 module.exports = router

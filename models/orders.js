@@ -7,7 +7,7 @@ const OrdersSchema = new Schema({
   outputValue: String,
   currencyInput: String,
   currencyOutput: String,
-  paymentStatus: Number,
+  paymentStatus: String,
   fromWallet: String,
   toWallet: String,
 })

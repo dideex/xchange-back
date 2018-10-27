@@ -1,6 +1,6 @@
 const Orders = require('../models/orders')
 
-module.exports.addOrder = function(req, res) {
+module.exports.addOrder = (req, res) => {
   const {id} = req.payload
   const {
     inputValue,
@@ -23,9 +23,10 @@ module.exports.addOrder = function(req, res) {
     paymentStatus: +paymentStatus,
   })
 
-  Order.save().then(() => res.status(201).json({success: true}))
+  Order.save().then(result => res.status(201).json({result}))
 }
-module.exports.addGuestOrder = function(req, res) {
+
+module.exports.addGuestOrder = (req, res) => {
   const {
     inputValue,
     outputValue,
@@ -44,8 +45,15 @@ module.exports.addGuestOrder = function(req, res) {
     currencyOutput,
     fromWallet,
     toWallet,
-    paymentStatus: +paymentStatus,
+    paymentStatus,
   })
 
-  Order.save().then(() => res.status(201).json({success: true}))
+  Order.save().then(result => res.status(201).json({result}))
+}
+
+module.exports.confirmOrder = (req, res) => {
+  const {_id} = req.body
+  Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
+    .then(result => res.status(201).json({result}))
+    .catch(err => res.status(400).json({err}))
 }

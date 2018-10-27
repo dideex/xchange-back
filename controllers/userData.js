@@ -16,7 +16,6 @@ module.exports.getInfo = function(req, res) {
 module.exports.updateInfo = function(req, res) {
   const {id} = req.payload
   const {wallets, username, email} = req.body
-  console.log(" LOG ___ reqparams ", req.body )
   const User = mongoose.model('login')
   User.findOneAndUpdate({_id: id}, {wallets, username, email})
     .then(results => {
@@ -30,15 +29,3 @@ module.exports.updateInfo = function(req, res) {
       res.status(400).json({err: err.message})
     })
 }
-
-/* 
-"wallets" : {
-  "0" : "0000 5678 1234 5678", 
-  "1" : "1111 4321 1234 5678", 
-  "2" : "2222 4321 1234 5678", 
-  "3" : "3333 4321 1234 5678"
-}, 
-"email" : "root@localhost", 
-"username" : "ROOT", 
-"fullname" : "fullname"
- */
