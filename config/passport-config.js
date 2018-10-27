@@ -13,25 +13,24 @@ const params = {
 }
 
 passport.serializeUser((user, done) => {
+  // console.log(' LOG ___ serialize ')
   done(null, user.id)
 })
 
 passport.deserializeUser((id, done) => {
+  // console.log(' LOG ___ deserialize ', id)
   User.findById(id, (err, user) => done(err, user))
 })
 
 passport.use(
   'loginUsers',
   new LocalStrategy((login, password, done) => {
-    console.log(login)
+    // console.log('loginUser', login)
     User.findOne({login})
-      .then(user => {
-        if (user.validPassword(password)) {
-          return done(null, user)
-        } else {
-          return done(null, false)
-        }
-      })
+      .then(
+        user =>
+          user.validPassword(password) ? done(null, user) : done(null, false),
+      )
       .catch(err => {
         console.log(err)
         done(err)
@@ -39,18 +38,18 @@ passport.use(
   }),
 )
 
-var strategy = new Strategy(params, ({id}, done) => {
+const strategy = new Strategy(params, (payload, done) => {
   const User = mongoose.model('login')
-  console.log('from passport', id)
-  User.find({id})
+  console.log(' strategy ___ payload ', payload.id)
+  User.find({_id: payload.id})
     .then(
       user =>
         user
-          ? done(null, {id: user.id, ...user})
+          ? done(null, {id: payload.id})
           : done(new Error('User not found'), null),
     )
     .catch(err => {
-      console.log(err)
+      console.log('from strategy ', err)
       done(err)
     })
 })

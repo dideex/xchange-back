@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const ctrlCats = require('../controllers/cats');
+const userData = require('../controllers/userData');
 var passport = require('passport');
 
-let auth = passport.authenticate('jwt', {
+const auth = passport.authenticate('jwt', {
   session: false
 });
 
+
+router.get('/userData', auth, userData.getInfo);
 
 router.get('/', auth, ctrlCats.getCats);
 

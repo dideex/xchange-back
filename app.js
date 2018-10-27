@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const config = require('./config/config')
 const routerCats = require('./routes/cats')
+const routerApi = require('./routes/api')
 const cors = require('cors')
 
 mongoose.Promise = global.Promise
@@ -47,7 +48,7 @@ app.use(passport.session())
 
 app.post('/token', function(req, res, next) {
   passport.authenticate('loginUsers', (err, user) => {
-    console.log(user)
+    // console.log(user)
     if (err) {
       return next(err)
     }
@@ -61,7 +62,7 @@ app.post('/token', function(req, res, next) {
         return next(err)
       }
       const payload = {
-        id: user.id,
+        id: user._id,
       }
       const token = jwt.encode(payload, config.secret) // line 10 passport-config
       res.json({token})
@@ -69,6 +70,7 @@ app.post('/token', function(req, res, next) {
   })(req, res, next)
 })
 
+app.use('/api', routerApi)
 app.use('/api/cats', routerCats)
 
 app.use((req, res, next) => {

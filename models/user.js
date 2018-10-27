@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   },
   hash: String,
   wallets: Object,
-  name: String,
+  username: String,
   phone: String,
   email: String,
   lastOperations: Array,
