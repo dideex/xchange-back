@@ -8,4 +8,8 @@ const auth = passport.authenticate('jwt', {
 })
 
 router.get('/userData', auth, userData.getInfo)
+
+router.post('/userData', auth, userData.updateInfo)
+
+
 module.exports = router
