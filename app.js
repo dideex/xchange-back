@@ -48,7 +48,6 @@ app.use(passport.session())
 
 app.post('/token', function(req, res, next) {
   passport.authenticate('loginUsers', (err, user) => {
-    // console.log(user)
     if (err) {
       return next(err)
     }
