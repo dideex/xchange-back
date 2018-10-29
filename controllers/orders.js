@@ -7,6 +7,8 @@ module.exports.addOrder = (req, res) => {
     outputValue,
     currencyInput,
     currencyOutput,
+    currencyInputLabel,
+    currencyOutputLabel,
     paymentStatus,
     fromWallet,
     toWallet,
@@ -18,9 +20,11 @@ module.exports.addOrder = (req, res) => {
     outputValue,
     currencyInput,
     currencyOutput,
+    currencyInputLabel,
+    currencyOutputLabel,
     fromWallet,
     toWallet,
-    paymentStatus: +paymentStatus,
+    paymentStatus,
   })
 
   Order.save().then(result => res.status(201).json({result}))
@@ -32,6 +36,8 @@ module.exports.addGuestOrder = (req, res) => {
     outputValue,
     currencyInput,
     currencyOutput,
+    currencyInputLabel,
+    currencyOutputLabel,
     paymentStatus,
     fromWallet,
     toWallet,
@@ -43,6 +49,8 @@ module.exports.addGuestOrder = (req, res) => {
     outputValue,
     currencyInput,
     currencyOutput,
+    currencyInputLabel,
+    currencyOutputLabel,
     fromWallet,
     toWallet,
     paymentStatus,
@@ -56,4 +64,15 @@ module.exports.confirmOrder = (req, res) => {
   Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
     .then(result => res.status(201).json({result}))
     .catch(err => res.status(400).json({err}))
+}
+
+module.exports.getAuthOrders = (req, res) => {
+  const {id} = req.payload
+  if (!id) res.status(401).json({err: 'Unauthorized '})
+
+  Orders.find({user: id})
+    .then(data => res.status(200).json(data))
+    .catch(err =>
+      res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),
+    )
 }

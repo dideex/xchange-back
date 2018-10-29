@@ -25,7 +25,7 @@ module.exports.updateInfo = function(req, res) {
       if (results) {
         res.json(results)
       } else {
-        res.status(400).json({err: 'Cat not found'})
+        res.status(400).json({err: 'User not found'})
       }
     })
     .catch(err => {
@@ -36,10 +36,23 @@ module.exports.updateInfo = function(req, res) {
 module.exports.signup = function(req, res) {
   const User = mongoose.model('login')
   const {username, login, password, email} = req.body
+  emailReg = new RegExp(
+    `^(([^<>()\\[\\]\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$`,
+  )
+
+  if (!emailReg.test(email))
+    return res.status(401).json({err: 'Введите email', errCode: 2})
+  if (!password)
+    return res.status(401).json({err: 'Введите пароль', errCode: 3})
+  if (!username) return res.status(401).json({err: 'Введите ФИО', errCode: 4})
+  if (!login) return res.status(401).json({err: 'Введите логин', errCode: 5})
+
   User.findOne({login})
     .then(user => {
       if (user) {
-        res.status(400).json({err: 'User exist', errCode: 2})
+        res
+          .status(400)
+          .json({err: 'Пользователь с таким именем уже существует', errCode: 1})
       } else {
         const newUser = new User()
         newUser.login = login

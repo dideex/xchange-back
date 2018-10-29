@@ -6,10 +6,13 @@ const OrdersSchema = new Schema({
   inputValue: String,
   outputValue: String,
   currencyInput: String,
+  currencyInputLabel: String,
   currencyOutput: String,
+  currencyOutputLabel: String,
   paymentStatus: String,
   fromWallet: String,
   toWallet: String,
+  created: {type: Date, default: Date.now},
 })
 
 const Orders = mongoose.model('order', OrdersSchema)

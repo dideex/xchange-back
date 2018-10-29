@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 
 module.exports.getCats = function(req, res) {
   const {id} = req.payload
-  console.log(' LOG ___ req ', id)
   const User = mongoose.model('login')
   User.find({_id: id})
     .then(res => console.log(res))
