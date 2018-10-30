@@ -12,7 +12,7 @@ router.get('/userData', auth, userData.getInfo)
 router.post('/userData', auth, userData.updateInfo)
 router.post('/signupUser', userData.signup)
 
-router.get('/orders', auth, orders.getAuthOrders)
+router.get('/order', orders.getGuestOrder)
 
 router.post('/orders', auth, orders.addOrder)
 router.post('/guestOrders', orders.addGuestOrder)

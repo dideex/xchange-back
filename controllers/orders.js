@@ -77,13 +77,14 @@ module.exports.getAuthOrders = (req, res) => {
     )
 }
 
-module.exports.getAuthOrder = (req, res) => {
-  const {id} = req.payload
+module.exports.getGuestOrder = (req, res) => {
   const {_id} = req.query
-  if (!id) res.status(401).json({err: 'Unauthorized '})
+  if (!_id) res.status(400).json({err: 'Введите _id'})
 
-  Orders.find({user: id, _id})
-    .then(data => res.status(200).json(data))
+  Orders.findOne({user: 'Guest', _id})
+    .then(data => {
+      if(!data) res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err})
+      res.status(200).json(data)})
     .catch(err =>
       res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),
     )
