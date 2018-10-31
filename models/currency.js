@@ -38,8 +38,8 @@ const CurrenciesSchema = new Schema({
   label: String,
   price_usd: String,
   change: String,
-  minimum: String,
-  reserved: String,
+  minimal: String,
+  reserve: String,
   type: String,
   base: String,
 })

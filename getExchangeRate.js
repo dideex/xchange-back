@@ -15,181 +15,184 @@ const mockData = [
   {
     id: 'bitcoin',
     name: 'bitcoin',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'ethereum',
     name: 'ethereum',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'ripple',
     name: 'ripple',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'bitcoin-cash',
     name: 'Bitcoin Cash',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'eos',
     name: 'eos',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'stellar',
     name: 'stellar',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'litecoin',
     name: 'litecoin',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'tether',
     name: 'tether',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'cardano',
     name: 'cardano',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'monero',
     name: 'monero',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'tron',
     name: 'tron',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'dash',
     name: 'dash',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'iota',
     name: 'iota',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'binance-coin',
     name: 'binance-coin',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'nem',
     name: 'nem',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'zcash',
     name: 'zcash',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'dogecoin',
     name: 'dogecoin',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'omisego',
     name: 'omisego',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'lisk',
     name: 'lisk',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: '',
   },
   {
     id: 'sberRu',
     name: 'sberbank ruble',
     label: 'Ru',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: 'Ruble',
   },
   {
     id: 'alfaRu',
     name: 'Alfa bank ruble',
     label: 'Ru',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: 'Ruble',
   },
   {
     id: 'sberEu',
     name: 'sberbank eu',
     label: 'Euro',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: 'Euro',
   },
   {
     id: 'sberUsd',
     name: 'sberbank USD',
     label: 'usd',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: 'usd',
   },
 ]
 
-const createTotalSchema = () => {
-  mockData.forEach(currency =>
-    Currency.update({id: currency.id}, {$set: currency}, {upsert: true}, err =>
-      console.log(err),
+const createTotalSchema = () =>
+  Promise.all(
+    mockData.map(currency =>
+      Currency.update(
+        {id: currency.id},
+        {$set: currency},
+        {upsert: true},
+        err => console.log(err),
+      ),
     ),
   )
 
-  // const newCurrency = new Currency(mockData[0])
-  // return newCurrency.save()
-}
-
+// const newCurrency = new Currency(mockData[0])
+// return newCurrency.save()
 
 // Currency.update(
 //   {'entities.name': 'Bitcoin'},
@@ -247,8 +250,8 @@ const fetchValutes = () =>
     id: 'sberRu',
     name: 'sberbank ruble',
     label: 'Ru',
-    reserved: '10000',
-    minimum: '10000',
+    reserve: '10000',
+    minimal: '1',
     base: 'Ruble',
   }, */
       bases.forEach(base =>
@@ -286,6 +289,6 @@ const fetchValutes = () =>
       // })
     })
 // createTotalSchema()
-fetchValutes().then(() => fetchCrypto())
+createTotalSchema().then(() => fetchValutes().then(() => fetchCrypto()))
 // updateTotalSchema().then(() => fetchCrypto().then(() => fetchValutes()))
 // fetchCrypto()
