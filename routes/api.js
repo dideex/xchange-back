@@ -17,6 +17,7 @@ router.get('/order', orders.getGuestOrder)
 
 router.get('/currency', currency.getCurrency)
 
+router.get('/orders', auth, orders.getAuthOrders)
 router.post('/orders', auth, orders.addOrder)
 router.post('/guestOrders', orders.addGuestOrder)
 router.post('/confirmOrder', orders.confirmOrder)

@@ -15,6 +15,7 @@ const mockData = [
   {
     id: 'bitcoin',
     name: 'bitcoin',
+    icon: 'Bitcoin',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -22,6 +23,7 @@ const mockData = [
   {
     id: 'ethereum',
     name: 'ethereum',
+    icon: 'Ethereum',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -29,6 +31,7 @@ const mockData = [
   {
     id: 'ripple',
     name: 'ripple',
+    icon: 'XRP',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -36,6 +39,7 @@ const mockData = [
   {
     id: 'bitcoin-cash',
     name: 'Bitcoin Cash',
+    icon: 'Bitcoin Cash',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -43,6 +47,7 @@ const mockData = [
   {
     id: 'eos',
     name: 'eos',
+    icon: 'EOS',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -50,6 +55,7 @@ const mockData = [
   {
     id: 'stellar',
     name: 'stellar',
+    icon: 'Stellar',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -57,6 +63,7 @@ const mockData = [
   {
     id: 'litecoin',
     name: 'litecoin',
+    icon: 'Litecoin',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -64,6 +71,7 @@ const mockData = [
   {
     id: 'tether',
     name: 'tether',
+    icon: 'Tether',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -71,6 +79,7 @@ const mockData = [
   {
     id: 'cardano',
     name: 'cardano',
+    icon: 'Cardano',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -78,6 +87,7 @@ const mockData = [
   {
     id: 'monero',
     name: 'monero',
+    icon: 'Monero',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -85,6 +95,7 @@ const mockData = [
   {
     id: 'tron',
     name: 'tron',
+    icon: 'TRON',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -92,6 +103,7 @@ const mockData = [
   {
     id: 'dash',
     name: 'dash',
+    icon: 'Dash',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -99,6 +111,7 @@ const mockData = [
   {
     id: 'iota',
     name: 'iota',
+    icon: 'IOTA',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -106,6 +119,7 @@ const mockData = [
   {
     id: 'binance-coin',
     name: 'binance-coin',
+    icon: 'Binance Coin',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -113,6 +127,7 @@ const mockData = [
   {
     id: 'nem',
     name: 'nem',
+    icon: 'NEM',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -120,6 +135,7 @@ const mockData = [
   {
     id: 'zcash',
     name: 'zcash',
+    icon: 'Zcash',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -127,6 +143,7 @@ const mockData = [
   {
     id: 'dogecoin',
     name: 'dogecoin',
+    icon: 'Dogecoin',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -134,6 +151,7 @@ const mockData = [
   {
     id: 'omisego',
     name: 'omisego',
+    icon: 'OmiseGO',
     reserve: '10000',
     minimal: '1',
     base: '',
@@ -141,41 +159,82 @@ const mockData = [
   {
     id: 'lisk',
     name: 'lisk',
+    icon: 'Lisk',
     reserve: '10000',
     minimal: '1',
     base: '',
   },
   {
     id: 'sberRu',
-    name: 'sberbank ruble',
-    label: 'Ru',
+    name: 'Сбербанк руб',
+    icon: 'Sberbank',
+    label: 'RUR',
     reserve: '10000',
     minimal: '1',
     base: 'Ruble',
-  },
-  {
-    id: 'alfaRu',
-    name: 'Alfa bank ruble',
-    label: 'Ru',
-    reserve: '10000',
-    minimal: '1',
-    base: 'Ruble',
-  },
-  {
-    id: 'sberEu',
-    name: 'sberbank eu',
-    label: 'Euro',
-    reserve: '10000',
-    minimal: '1',
-    base: 'Euro',
   },
   {
     id: 'sberUsd',
-    name: 'sberbank USD',
-    label: 'usd',
+    name: 'Сбербанк доллар',
+    icon: 'Sberbank',
+    label: 'USD',
     reserve: '10000',
     minimal: '1',
     base: 'usd',
+  },
+  {
+    id: 'alfaRu',
+    name: 'Альфа банк',
+    icon: 'Alfabank',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
+  },
+  {
+    id: 'tinkoff',
+    name: 'Тинькофф',
+    icon: 'Tinkoff',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
+  },
+  {
+    id: 'VTB',
+    name: 'ВТБ',
+    icon: 'VTB',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
+  },
+  {
+    id: 'PMS',
+    name: 'Промсвязьбанк',
+    icon: 'PMS',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
+  },
+  {
+    id: 'qiwi',
+    name: 'QIWI',
+    icon: 'Qiwi',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
+  },
+  {
+    id: 'ym',
+    name: 'Яндекс.Деньги',
+    icon: 'Yandex',
+    label: 'RUR',
+    reserve: '1000000',
+    minimal: '1',
+    base: 'Ruble',
   },
 ]
 
@@ -249,7 +308,8 @@ const fetchValutes = () =>
   {
     id: 'sberRu',
     name: 'sberbank ruble',
-    label: 'Ru',
+    icon: 'sberbank ruble',
+    label: 'RUR',
     reserve: '10000',
     minimal: '1',
     base: 'Ruble',

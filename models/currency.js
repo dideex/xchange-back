@@ -42,6 +42,7 @@ const CurrenciesSchema = new Schema({
   reserve: String,
   type: String,
   base: String,
+  icon: String,
 })
 
 //просим mongoose сохранить модель для ее дальнейшего использования
