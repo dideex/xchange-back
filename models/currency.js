@@ -1,34 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const CurrencySchema = new Schema({
-  id: {
-    type: String,
-    required: [true],
-  },
-  name: String,
-  label: String,
-  price_usd: String,
-  change: String,
-  minimal: String,
-  reserve: String,
-  type: String,
-})
-
-const CurrencyRealSchema = new Schema({
-  id: {
-    type: String,
-    required: [true],
-  },
-  name: String,
-  label: String,
-  price_usd: String,
-  change: String,
-  minimal: String,
-  reserve: String,
-  type: String,
-})
-
 const CurrenciesSchema = new Schema({
   id: {
     type: String,
@@ -43,7 +15,7 @@ const CurrenciesSchema = new Schema({
   type: String,
   base: String,
   icon: String,
+  mask: String,
 })
 
-//просим mongoose сохранить модель для ее дальнейшего использования
-mongoose.model('currency', CurrenciesSchema)
+mongoose.model('currency', CurrenciesSchema, 'currency')

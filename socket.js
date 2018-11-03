@@ -1,0 +1,40 @@
+const mongoose = require('mongoose')
+require('./models/RecentOperations')
+
+mongoose.Promise = global.Promise
+mongoose.connect(
+  'mongodb://localhost:27017/jwt',
+  {useMongoClient: true},
+)
+const Operation = mongoose.model('operations')
+
+const io = require('socket.io')()
+const port = 3040
+
+const hashEmail = source => {
+  const [hash, mail] = source.split('@')
+  return `${hash[0]}${'*'.repeat(hash.slice(1, -1).length)}${
+    hash[hash.length - 1]
+  }@${mail}`
+}
+
+io.on('connection', client => {
+  Operation.find({}).then(data => {
+    client.send({type: 'init', data})
+  })
+  client.on('newOrder', _order => {
+    const order = {..._order, email: hashEmail(_order.email)}
+    Operation.find({}).then(async res => {
+      if (res.length > 3)
+        await Operation.findOneAndRemove({}, err => console.log('deleted', err))
+      const operation = new Operation(order)
+      operation.save().then(() => {
+        client.send({type: 'broadcast', order})
+        client.broadcast.send({type: 'broadcast', order})
+      })
+    })
+  })
+})
+
+io.listen(port)
+console.log(`server running on port ${port}`)

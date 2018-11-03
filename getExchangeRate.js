@@ -169,18 +169,20 @@ const mockData = [
     name: 'Сбербанк руб',
     icon: 'Sberbank',
     label: 'RUR',
-    reserve: '10000',
+    reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'sberUsd',
-    name: 'Сбербанк доллар',
+    name: 'Сбербанк usd',
     icon: 'Sberbank',
     label: 'USD',
-    reserve: '10000',
+    reserve: '1000000',
     minimal: '1',
     base: 'usd',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'alfaRu',
@@ -190,6 +192,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'tinkoff',
@@ -199,6 +202,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'VTB',
@@ -208,6 +212,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'PMS',
@@ -217,6 +222,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    mask: '____ ____ ____ ____',
   },
   {
     id: 'qiwi',
@@ -245,19 +251,11 @@ const createTotalSchema = () =>
         {id: currency.id},
         {$set: currency},
         {upsert: true},
-        err => console.log(err),
+        () => {},
       ),
     ),
   )
 
-// const newCurrency = new Currency(mockData[0])
-// return newCurrency.save()
-
-// Currency.update(
-//   {'entities.name': 'Bitcoin'},
-//   {$set: {'entities.$.name': 'name'}},
-//   err => console.log(err),
-// )
 const fetchCrypto = () =>
   fetch('https://api.coinmarketcap.com/v1/ticker/')
     .then(response => response.json())
@@ -304,16 +302,6 @@ const fetchValutes = () =>
         change: 0,
       }
 
-      /* 
-  {
-    id: 'sberRu',
-    name: 'sberbank ruble',
-    icon: 'sberbank ruble',
-    label: 'RUR',
-    reserve: '10000',
-    minimal: '1',
-    base: 'Ruble',
-  }, */
       bases.forEach(base =>
         Currency.update(
           {base: base},
@@ -322,31 +310,6 @@ const fetchValutes = () =>
           () => {},
         ),
       )
-
-      // Currency.find({'id': 'sberRu'}, (err, doc) => {}).then(u =>
-      //   console.log(u),
-      // )
-
-      // Currency.update({}, {$push: {entities: data[0]}}, err => console.log(err))
-      // Currency.update({}, {$push: {entities: data[1]}}, err => console.log(err))
-
-      // Currency.find({'realCash.id': {$exists: true}}).then(result => {
-      //   const newCurrency = new Currency({realCash: [...data]})
-      //   if (!result[0]) newCurrency.save()
-      // })
-
-      // data.map(row => {
-      //   Currency.findOne({'realCash.id': row.id}).then(
-      //     currency =>
-      //       currency
-      //         ? Currency.update(
-      //             {'realCash.id': row.id},
-      //             {$set: {'realCash.$': row}},
-      //             () => {},
-      //           )
-      //         : Currency.update({}, {$push: {realCash: row}}, () => {}),
-      //   )
-      // })
     })
 // createTotalSchema()
 createTotalSchema().then(() => fetchValutes().then(() => fetchCrypto()))
