@@ -19,6 +19,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 1,
   },
   {
     id: 'ethereum',
@@ -27,6 +28,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 2,
   },
   {
     id: 'ripple',
@@ -35,6 +37,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 4,
   },
   {
     id: 'bitcoin-cash',
@@ -43,6 +46,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 5,
   },
   {
     id: 'eos',
@@ -51,6 +55,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 7,
   },
   {
     id: 'stellar',
@@ -59,6 +64,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 8,
   },
   {
     id: 'litecoin',
@@ -67,6 +73,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 10,
   },
   {
     id: 'tether',
@@ -75,6 +82,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 11,
   },
   {
     id: 'cardano',
@@ -83,6 +91,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 13,
   },
   {
     id: 'monero',
@@ -91,6 +100,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 14,
   },
   {
     id: 'tron',
@@ -99,6 +109,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 16,
   },
   {
     id: 'dash',
@@ -107,6 +118,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 17,
   },
   {
     id: 'iota',
@@ -115,6 +127,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 19,
   },
   {
     id: 'binance-coin',
@@ -123,6 +136,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 20,
   },
   {
     id: 'nem',
@@ -131,6 +145,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 22,
   },
   {
     id: 'zcash',
@@ -139,6 +154,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 23,
   },
   {
     id: 'dogecoin',
@@ -147,6 +163,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 25,
   },
   {
     id: 'omisego',
@@ -155,6 +172,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 26,
   },
   {
     id: 'lisk',
@@ -163,6 +181,7 @@ const mockData = [
     reserve: '10000',
     minimal: '1',
     base: '',
+    order: 28,
   },
   {
     id: 'sberRu',
@@ -172,6 +191,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 3,
     mask: '____ ____ ____ ____',
   },
   {
@@ -182,6 +202,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'usd',
+    order: 6,
     mask: '____ ____ ____ ____',
   },
   {
@@ -192,6 +213,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 9,
     mask: '____ ____ ____ ____',
   },
   {
@@ -202,6 +224,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 12,
     mask: '____ ____ ____ ____',
   },
   {
@@ -212,6 +235,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 15,
     mask: '____ ____ ____ ____',
   },
   {
@@ -222,6 +246,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 18,
     mask: '____ ____ ____ ____',
   },
   {
@@ -232,6 +257,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 21,
   },
   {
     id: 'ym',
@@ -241,6 +267,7 @@ const mockData = [
     reserve: '1000000',
     minimal: '1',
     base: 'Ruble',
+    order: 24,
   },
 ]
 

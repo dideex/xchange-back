@@ -7,6 +7,8 @@ const OperationsSchema = new Schema({
   outputValue: String,
   paymentStatus: String,
   currency: String,
+  inputLabel: String,
+  outputLabel: String,
 })
 
 mongoose.model('operations', OperationsSchema)

@@ -16,6 +16,7 @@ const CurrenciesSchema = new Schema({
   base: String,
   icon: String,
   mask: String,
+  order: Number,
 })
 
 mongoose.model('currency', CurrenciesSchema, 'currency')
