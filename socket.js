@@ -24,12 +24,17 @@ io.on('connection', client => {
   })
   client.on('newOrder', _order => {
     const order = {..._order, email: hashEmail(_order.email)}
-    Operation.find({}).then(async res => {
-      if (res.length > 3)
-        await Operation.findOneAndRemove({}, err => console.log('deleted', err))
+
+    Operation.find({}, null, {sort: {created: 1}}).then(async res => {
+      console.log(res[0].created)
+      console.log(res[1].created)
+      console.log(res[2].created)
+      if (res.length >= 3)
+        await Operation.findOneAndRemove({created: res[0].created}, err =>
+          console.log('deleted', err),
+        )
       const operation = new Operation(order)
       operation.save().then(() => {
-        client.send({type: 'broadcast', order})
         client.broadcast.send({type: 'broadcast', order})
       })
     })

@@ -21,14 +21,14 @@ const getValue = () => {
   const data =
     Math.random() > 0.5
       ? {
-          currency: 'Bitcoin',
+          currency: 'Sberbank',
           inputValue: amount,
           outputValue: amount * 417104,
           inputLabel: 'BTC',
           outputLabel: 'RUR',
         }
       : {
-          currency: 'Sberbank',
+          currency: 'Bitcoin',
           outputValue: amount,
           inputValue: amount * 417104,
           inputLabel: 'RUR',
@@ -39,6 +39,6 @@ const getValue = () => {
 
 socket.emit('newOrder', {
   ...getEmail(),
-  paymentStatus: Math.round(Math.random()),
+  paymentStatus: Math.round(Math.random()) + 1,
   ...getValue(),
 })

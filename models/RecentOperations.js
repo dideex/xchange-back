@@ -9,6 +9,7 @@ const OperationsSchema = new Schema({
   currency: String,
   inputLabel: String,
   outputLabel: String,
+  created: {type: Date, default: Date.now},
 })
 
 mongoose.model('operations', OperationsSchema)
