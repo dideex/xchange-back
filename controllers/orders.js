@@ -1,4 +1,5 @@
 const Orders = require('../models/orders')
+const emailSender = require('../utils/sendEmail')
 
 module.exports.addOrder = (req, res) => {
   const {id} = req.payload
@@ -60,9 +61,12 @@ module.exports.addGuestOrder = (req, res) => {
 }
 
 module.exports.confirmOrder = (req, res) => {
-  const {_id} = req.body
+  const {_id, value, currency} = req.body
   Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
-    .then(result => res.status(201).json({result}))
+    .then(result => {
+      res.status(201).json({result})
+      emailSender.notificationByEmail(value, currency)
+    })
     .catch(err => res.status(400).json({err}))
 }
 
@@ -77,14 +81,26 @@ module.exports.getAuthOrders = (req, res) => {
     )
 }
 
+module.exports.sendEmail = (req, res) => {
+  const {email, phone, message} = req.body
+  emailSender
+    .sendEmail(email, phone, message)
+    .then(() => res.status(200).json({status: 'Отправлено'}))
+    .catch(err => res.status(500).json({status: 'Ошибка сервера', err}))
+}
+
 module.exports.getGuestOrder = (req, res) => {
   const {_id} = req.query
   if (!_id) res.status(400).json({err: 'Введите _id'})
 
   Orders.findOne({user: 'Guest', _id})
     .then(data => {
-      if(!data) res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err})
-      res.status(200).json(data)})
+      if (!data)
+        res
+          .status(404)
+          .json({err: 'Данных не найдено', errCode: 2, errMsg: err})
+      res.status(200).json(data)
+    })
     .catch(err =>
       res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),
     )

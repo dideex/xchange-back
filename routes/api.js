@@ -22,5 +22,7 @@ router.post('/orders', auth, orders.addOrder)
 router.post('/guestOrders', orders.addGuestOrder)
 router.post('/confirmOrder', orders.confirmOrder)
 
+router.post('/sendMessage', orders.sendEmail)
+
 
 module.exports = router

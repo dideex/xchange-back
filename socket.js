@@ -26,9 +26,6 @@ io.on('connection', client => {
     const order = {..._order, email: hashEmail(_order.email)}
 
     Operation.find({}, null, {sort: {created: 1}}).then(async res => {
-      console.log(res[0].created)
-      console.log(res[1].created)
-      console.log(res[2].created)
       if (res.length >= 3)
         await Operation.findOneAndRemove({created: res[0].created}, err =>
           console.log('deleted', err),
