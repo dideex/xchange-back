@@ -1,6 +1,7 @@
 const Orders = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
 const Currency = require('../models/currency.js')
+const Telegram = require('../bot')
 
 const validateOrder = async order => {
   if (
@@ -68,6 +69,7 @@ module.exports.confirmOrder = (req, res) => {
   const {_id, value, currency} = req.body
   Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
     .then(result => {
+      Telegram.sendMessage(`Был создан перевод на сумму ${value} ${currency} \r\n ссылка`)
       res.status(201).json({result})
       emailSender.notificationByEmail(value, currency)
     })

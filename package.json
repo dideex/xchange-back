@@ -22,12 +22,14 @@
     "morgan": "^1.9.1",
     "mubsub": "^1.4.0",
     "node-fetch": "^2.2.0",
+    "node-telegram-bot-api": "^0.30.0",
     "nodemailer": "^4.6.8",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "socks5-https-client": "^1.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
