@@ -19,4 +19,13 @@ const CurrenciesSchema = new Schema({
   order: Number,
 })
 
-mongoose.model('currency', CurrenciesSchema, 'currency')
+const Currency = mongoose.model('currency', CurrenciesSchema, 'currency')
+
+module.exports.Currency = Currency
+
+module.exports.getRate = async (firstCurrencyId, secondCurrencyId) => {
+  const first = await Currency.find({name: firstCurrencyId})
+  const second = await Currency.find({name: secondCurrencyId})
+  if(!first[0] || !second[0]) return null
+  return first[0].price_usd / second[0].price_usd
+}

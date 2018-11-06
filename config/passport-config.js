@@ -40,7 +40,6 @@ passport.use(
 
 const strategy = new Strategy(params, (payload, done) => {
   const User = mongoose.model('login')
-  console.log(' strategy ___ payload ', payload.id)
   User.find({_id: payload.id})
     .then(
       user =>

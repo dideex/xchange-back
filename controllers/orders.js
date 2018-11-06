@@ -1,34 +1,38 @@
 const Orders = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
+const Currency = require('../models/currency.js')
 
-module.exports.addOrder = (req, res) => {
-  const {id} = req.payload
+const validateOrder = async order => {
+  if (
+    Object.values(order).filter(value => value === undefined || value === '')
+      .length
+  )
+    return {err: 'Введите все поля'}
   const {
     inputValue,
     outputValue,
     currencyInput,
     currencyOutput,
-    currencyInputLabel,
-    currencyOutputLabel,
-    paymentStatus,
-    fromWallet,
-    toWallet,
-  } = req.body
+  } = order
 
-  const Order = new Orders({
-    user: id,
-    inputValue,
-    outputValue,
-    currencyInput,
-    currencyOutput,
-    currencyInputLabel,
-    currencyOutputLabel,
-    fromWallet,
-    toWallet,
-    paymentStatus,
-  })
+  const rateExchange = await Currency.getRate(currencyInput, currencyOutput)
+  if(rateExchange === null) return {err: 'Ошибка синхронизации'}
+  const threshold = Math.abs(+inputValue * rateExchange - +outputValue )
+  if (threshold > 1 || threshold !== threshold)
+    return {err: 'Ошибка синхронизации'}
+  return {success: true}
+}
 
-  Order.save().then(result => res.status(201).json({result}))
+module.exports.addOrder = async (req, res) => {
+  const {id} = req.payload
+  const orderData = {user: id, ...req.body}
+  const valid = await validateOrder(orderData)
+
+  if (valid.err) res.status(418).json({error: valid.err})
+  else {
+    const Order = new Orders(orderData)
+    Order.save().then(result => res.status(201).json({result}))
+  }
 }
 
 module.exports.addGuestOrder = (req, res) => {

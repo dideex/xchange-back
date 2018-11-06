@@ -3,6 +3,15 @@ const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport(config.mail.smtp)
 
+transporter.set('oauth2_provision_cb', (user, renew, callback) => {
+  let accessToken = config.mail.smtp
+  if (!accessToken) {
+    return callback(new Error('Unknown user'))
+  } else {
+    return callback(null, accessToken)
+  }
+})
+
 // transporter.sendMail(mailOptions, function(error, info) {
 //   //если есть ошибки при отправке - сообщаем об этом
 //   if (error) {
@@ -22,6 +31,7 @@ module.exports.sendEmail = (email, phone, message) =>
     transporter.sendMail(mailOptions, function(error, info) {
       //если есть ошибки при отправке - сообщаем об этом
       if (error) {
+        console.log(' LOG ___ error ', error)
         rej()
       }
       res()

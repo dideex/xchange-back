@@ -54,7 +54,7 @@ app.post('/token', function(req, res, next) {
     if (!user) {
       return res
         .status(401)
-        .send({status: 'Укажите правильный логин и пароль!'})
+        .send({error: 'Укажите правильный логин и пароль!'})
     }
     req.logIn(user, err => {
       if (err) {
