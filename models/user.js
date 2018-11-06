@@ -12,8 +12,8 @@ const UserSchema = new Schema({
   username: String,
   phone: String,
   email: String,
-  lastOperations: Array,
   moneyConverted: Number,
+  isAdmin: Boolean
 })
 
 UserSchema.methods.setPassword = function(password) {

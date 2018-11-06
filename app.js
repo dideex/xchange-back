@@ -7,7 +7,6 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const config = require('./config/config')
-const routerCats = require('./routes/cats')
 const routerApi = require('./routes/api')
 const cors = require('cors')
 
@@ -29,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(
   session({
-    secret: 'secret',
+    secret: config.session,
     key: 'keys',
     cookie: {
       path: '/',
@@ -52,9 +51,7 @@ app.post('/token', function(req, res, next) {
       return next(err)
     }
     if (!user) {
-      return res
-        .status(401)
-        .send({error: 'Укажите правильный логин и пароль!'})
+      return res.status(401).send({error: 'Укажите правильный логин и пароль!'})
     }
     req.logIn(user, err => {
       if (err) {
@@ -63,14 +60,14 @@ app.post('/token', function(req, res, next) {
       const payload = {
         id: user._id,
       }
-      const token = jwt.encode(payload, config.secret) // line 10 passport-config
-      res.json({token})
+      const token = jwt.encode(payload, config.secret)
+      if (user.isAdmin) res.json({token, isAdmin: true})
+      else res.json({token})
     })
   })(req, res, next)
 })
 
 app.use('/api', routerApi)
-app.use('/api/cats', routerCats)
 
 app.use((req, res, next) => {
   res.status(404).json({err: '404'})
