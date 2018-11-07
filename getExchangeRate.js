@@ -20,6 +20,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 1,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'ethereum',
@@ -29,6 +30,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 2,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'ripple',
@@ -38,6 +40,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 4,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'bitcoin-cash',
@@ -47,6 +50,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 5,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'eos',
@@ -56,6 +60,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 7,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'stellar',
@@ -65,6 +70,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 8,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'litecoin',
@@ -74,6 +80,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 10,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'tether',
@@ -83,6 +90,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 11,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'cardano',
@@ -92,6 +100,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 13,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'monero',
@@ -101,6 +110,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 14,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'tron',
@@ -110,6 +120,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 16,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'dash',
@@ -119,6 +130,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 17,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'iota',
@@ -128,6 +140,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 19,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'binance-coin',
@@ -137,6 +150,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 20,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'nem',
@@ -146,6 +160,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 22,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'zcash',
@@ -155,6 +170,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 23,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'dogecoin',
@@ -164,6 +180,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 25,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'omisego',
@@ -173,6 +190,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 26,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'lisk',
@@ -182,6 +200,7 @@ const mockData = [
     minimal: '1',
     base: '',
     order: 28,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'sberRu',
@@ -192,6 +211,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 3,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -203,6 +223,7 @@ const mockData = [
     minimal: '1',
     base: 'usd',
     order: 6,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -214,6 +235,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 9,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -225,6 +247,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 12,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -236,6 +259,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 15,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -247,6 +271,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 18,
+    source: '1234 4321 1234 4321',
     mask: '____ ____ ____ ____',
   },
   {
@@ -258,6 +283,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 21,
+    source: '1234 4321 1234 4321',
   },
   {
     id: 'ym',
@@ -268,6 +294,7 @@ const mockData = [
     minimal: '1',
     base: 'Ruble',
     order: 24,
+    source: '1234 4321 1234 4321',
   },
 ]
 

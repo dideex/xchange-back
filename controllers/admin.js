@@ -63,10 +63,29 @@ module.exports.summaryOrderUserInfo = (req, res) => {
 }
 
 module.exports.summaryOrderChangeStatus = (req, res) => {
+  const {id} = req.payload
   const {_id, paymentStatus} = req.body
+  const User = mongoose.model('login')
   const Orders = mongoose.model('order')
-  Orders.findOneAndUpdate({_id}, {paymentStatus}).then(data => {
-    if (data) res.status(200).json({success: true})
-    else res.status(404).json({error: 'server error'})
+  User.findOne({_id: id}).then(({isAdmin}) => {
+    if (!isAdmin) res.status(404).json({error: 'have no permission'})
+    Orders.findOneAndUpdate({_id}, {paymentStatus}).then(data => {
+      if (data) res.status(200).json({success: true})
+      else res.status(404).json({error: 'server error'})
+    })
+  })
+}
+
+module.exports.setCurrencyOptions = (req, res) => {
+  const {id} = req.payload
+  const {_id, reserve, source, minimal} = req.body
+  const User = mongoose.model('login')
+  const Currency = mongoose.model('currency')
+  User.findOne({_id: id}).then(({isAdmin}) => {
+    if (!isAdmin) res.status(404).json({error: 'have no permission'})
+    Currency.findOneAndUpdate({_id}, {reserve, source, minimal}).then(data => {
+      if (data) res.status(200).json({success: true})
+      else res.status(404).json({error: 'server error'})
+    })
   })
 }
