@@ -9,16 +9,11 @@ const validateOrder = async order => {
       .length
   )
     return {err: 'Введите все поля'}
-  const {
-    inputValue,
-    outputValue,
-    currencyInput,
-    currencyOutput,
-  } = order
+  const {inputValue, outputValue, currencyInput, currencyOutput} = order
 
   const rateExchange = await Currency.getRate(currencyInput, currencyOutput)
-  if(rateExchange === null) return {err: 'Ошибка синхронизации'}
-  const threshold = Math.abs(+inputValue * rateExchange - +outputValue )
+  if (rateExchange === null) return {err: 'Ошибка синхронизации'}
+  const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
   if (threshold > 1 || threshold !== threshold)
     return {err: 'Ошибка синхронизации'}
   return {success: true}
@@ -69,7 +64,9 @@ module.exports.confirmOrder = (req, res) => {
   const {_id, value, currency} = req.body
   Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
     .then(result => {
-      Telegram.sendMessage(`Был создан перевод на сумму ${value} ${currency} \r\n ссылка`)
+      Telegram.sendMessage(
+        `Был создан перевод на сумму ${value} ${currency} \r\n ссылка`,
+      )
       res.status(201).json({result})
       emailSender.notificationByEmail(value, currency)
     })
@@ -81,6 +78,7 @@ module.exports.getAuthOrders = (req, res) => {
   if (!id) res.status(401).json({err: 'Unauthorized '})
 
   Orders.find({user: id})
+    .sort([['created', -1]])
     .then(data => res.status(200).json(data))
     .catch(err =>
       res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),

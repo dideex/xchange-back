@@ -29,5 +29,7 @@ router.get('/summaryOrders', auth, admin.getTotalOrders)
 router.get('/summaryOrders/:status', auth, admin.getTotalOrders)
 router.get('/summaryOrderUserInfo/:id', auth, admin.summaryOrderUserInfo)
 
+router.post('/summaryOrderChangeStatus', auth, admin.summaryOrderChangeStatus)
+
 
 module.exports = router
