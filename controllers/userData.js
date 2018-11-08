@@ -4,6 +4,12 @@ const jwt = require('jwt-simple')
 const config = require('../config/config')
 const Orders = require('../models/orders')
 
+module.exports.checkToken = function(req, res) {
+  const {id} = req.payload
+  if (id) res.status(200).json({success: true})
+  else res.status(401).json({err: true})
+}
+
 module.exports.getInfo = function(req, res) {
   const {id} = req.payload
   const User = mongoose.model('login')
@@ -11,7 +17,16 @@ module.exports.getInfo = function(req, res) {
     .then(async data => {
       const {wallets, lastOperations, username, email, login} = data[0]
       const convertedAmount = await Orders.getConvertedAmount(id)
-      res.status(200).json({wallets, lastOperations, username, email, login, convertedAmount})
+      res
+        .status(200)
+        .json({
+          wallets,
+          lastOperations,
+          username,
+          email,
+          login,
+          convertedAmount,
+        })
     })
     .catch(err => {
       res.status(400).json({err: err.message})

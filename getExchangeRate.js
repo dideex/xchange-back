@@ -324,7 +324,8 @@ const fetchCrypto = () =>
       //   // if (!data[0]) createTotalSchema()
       // })
       filteredDara.map(row => {
-        Currency.update({id: row.id}, {$set: row}, () => {})
+        Currency.update({id: row.id}, {$set: row}, () => console.log('done'))
+        
         // Currency.update({id: row.id}, {$push: {...row}}, () => console.log('done'))
         // const newCurrency = new Currency({row})
         // newCurrency.save().then(() => console.log('done'))
