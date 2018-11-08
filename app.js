@@ -61,6 +61,7 @@ app.post('/token', function(req, res, next) {
         id: user._id,
       }
       const token = jwt.encode(payload, config.secret)
+
       if (user.isAdmin) res.json({token, isAdmin: true})
       else res.json({token})
     })

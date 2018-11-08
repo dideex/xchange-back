@@ -2,14 +2,16 @@ const mongoose = require('mongoose')
 const bCrypt = require('bcryptjs')
 const jwt = require('jwt-simple')
 const config = require('../config/config')
+const Orders = require('../models/orders')
 
 module.exports.getInfo = function(req, res) {
   const {id} = req.payload
   const User = mongoose.model('login')
   User.find({_id: id})
-    .then(data => {
+    .then(async data => {
       const {wallets, lastOperations, username, email, login} = data[0]
-      res.json({wallets, lastOperations, username, email, login})
+      const convertedAmount = await Orders.getConvertedAmount(id)
+      res.status(200).json({wallets, lastOperations, username, email, login, convertedAmount})
     })
     .catch(err => {
       res.status(400).json({err: err.message})
