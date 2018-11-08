@@ -38,13 +38,49 @@ module.exports.sendEmail = (email, phone, message) =>
     })
   })
 
-module.exports.notificationByEmail = (currency, value) =>
+module.exports.notificationByEmail = (value, currency, url) =>
   new Promise((res, rej) => {
     const mailOptions = {
       from: `web site`,
       to: config.mail.smtp.auth.user,
       subject: `Новый перевод от ${value} ${currency}`,
-      text: `Новый перевод на сумму ${value} ${currency}`,
+      text: `Новый перевод на сумму ${value} ${currency} \r\n ${url}`,
+    }
+    transporter.sendMail(mailOptions, function(error, info) {
+      //если есть ошибки при отправке - сообщаем об этом
+      if (error) {
+        rej()
+      }
+      res()
+    })
+  })
+
+module.exports.userNotificationByEmail = (userEmail, value, currency, url) =>
+  new Promise((res, rej) => {
+    const mailOptions = {
+      from: `web site`,
+      to: userEmail,
+      subject: `Вы создали транзакцию`,
+      text: `Привтсвуем Вас! \r\n Вы создали новый перевод на сумму ${value} ${currency}. \r\n
+      Вы можете отслеживать его статус у нас на сайте ${url}`,
+    }
+    transporter.sendMail(mailOptions, function(error, info) {
+      //если есть ошибки при отправке - сообщаем об этом
+      if (error) {
+        rej()
+      }
+      res()
+    })
+  })
+
+module.exports.userSuccessNotificationByEmail = (userEmail, url) =>
+  new Promise((res, rej) => {
+    const mailOptions = {
+      from: `web site`,
+      to: userEmail,
+      subject: `Ваш перевод успешно закрыт`,
+      text: `Привтсвуем Вас! \r\n Ваш перевод был успешно оплачен. \r\n
+      Вы можете подробнее узнать на сайте ${url}`,
     }
     transporter.sendMail(mailOptions, function(error, info) {
       //если есть ошибки при отправке - сообщаем об этом

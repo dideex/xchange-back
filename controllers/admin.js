@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Telegram = require('../bot')
+const sendEmail = require('../utils/sendEmail')
 
 module.exports.getTotalOrders = (req, res) => {
   const {id} = req.payload
@@ -72,10 +72,12 @@ module.exports.summaryOrderChangeStatus = (req, res) => {
     if (!isAdmin) res.status(404).json({error: 'have no permission'})
     Orders.findOneAndUpdate({_id}, {paymentStatus}).then(data => {
       if (data) {
-        User.findOne({_id: data.user}).then(user => {
-          const email = user.email || 'Guest'
-          res.status(200).json({success: true, ...data._doc, email})
-        })
+        const {email} = data
+        sendEmail.userSuccessNotificationByEmail(
+          data.email,
+          'http://localhost:3000/lichnii-kabinet/' + id,
+        )
+        res.status(200).json({success: true, ...data._doc, email})
       } else res.status(404).json({error: 'server error'})
     })
   })

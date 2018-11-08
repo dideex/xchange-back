@@ -13,9 +13,10 @@ const validateOrder = async order => {
 
   const rateExchange = await Currency.getRate(currencyInput, currencyOutput)
   if (rateExchange === null) return {err: 'Ошибка синхронизации'}
-  const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
-  if (threshold > 1 || threshold !== threshold)
-    return {err: 'Ошибка синхронизации'}
+  //FIXME: fix the currencies difference
+  // const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
+  // if (threshold > 1 || threshold !== threshold)
+  //   return {err: 'Ошибка синхронизации'}
   return {success: true}
 }
 
@@ -43,6 +44,7 @@ module.exports.addGuestOrder = (req, res) => {
     paymentStatus,
     fromWallet,
     toWallet,
+    email,
   } = req.body
 
   const Order = new Orders({
@@ -57,20 +59,31 @@ module.exports.addGuestOrder = (req, res) => {
     fromWallet,
     toWallet,
     paymentStatus,
+    email,
   })
 
   Order.save().then(result => res.status(201).json({result}))
 }
 
 module.exports.confirmOrder = (req, res) => {
-  const {_id, value, currency} = req.body
+  const {_id, value, currency, email} = req.body
   Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
     .then(result => {
       Telegram.sendMessage(
         `Был создан перевод на сумму ${value} ${currency} \r\n ссылка`,
       )
       res.status(201).json({result})
-      emailSender.notificationByEmail(value, currency)
+      emailSender.notificationByEmail(
+        value,
+        currency,
+        'http://localhost:3000/summary/' + _id,
+      )
+      emailSender.userNotificationByEmail(
+        email,
+        value,
+        currency,
+        'http://localhost:3000/lichnii-kabinet/' + _id,
+      )
     })
     .catch(err => res.status(400).json({err}))
 }

@@ -13,6 +13,7 @@ const OrdersSchema = new Schema({
   paymentStatus: String,
   fromWallet: String,
   toWallet: String,
+  email: String,
   created: {type: Date, default: Date.now},
 })
 
