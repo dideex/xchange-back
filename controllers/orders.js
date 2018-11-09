@@ -8,15 +8,22 @@ const validateOrder = async order => {
     Object.values(order).filter(value => value === undefined || value === '')
       .length
   )
-    return {err: 'Введите все поля'}
+    return {err: 'Введите все поля', errCode: 31}
   const {inputValue, outputValue, currencyInput, currencyOutput} = order
 
   const rateExchange = await Currency.getRate(currencyInput, currencyOutput)
-  if (rateExchange === null) return {err: 'Ошибка синхронизации'}
+  if (rateExchange === null)
+    return {
+      err: 'Ошибка синхронизации с сервером, обновите страницу',
+      errCode: 32,
+    }
   //FIXME: fix the currencies difference
   // const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
   // if (threshold > 1 || threshold !== threshold)
-  //   return {err: 'Ошибка синхронизации'}
+  //   return {
+  //   err: 'Ошибка синхронизации с сервером, обновите страницу',
+  //   errCode: 32,
+  // }
   return {success: true}
 }
 
@@ -25,10 +32,14 @@ module.exports.addOrder = async (req, res) => {
   const orderData = {user: id, ...req.body}
   const valid = await validateOrder(orderData)
 
-  if (valid.err) res.status(418).json({error: valid.err})
+  if (valid.err) res.status(401).json(valid)
   else {
     const Order = new Orders(orderData)
-    Order.save().then(result => res.status(201).json({result}))
+    Order.save()
+      .then(result => res.status(201).json({result}))
+      .catch(() =>
+        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+      )
   }
 }
 
@@ -62,7 +73,11 @@ module.exports.addGuestOrder = (req, res) => {
     email,
   })
 
-  Order.save().then(result => res.status(201).json({result}))
+  Order.save()
+    .then(result => res.status(201).json({result}))
+    .catch(() =>
+      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+    )
 }
 
 module.exports.confirmOrder = (req, res) => {
@@ -85,18 +100,24 @@ module.exports.confirmOrder = (req, res) => {
         'http://localhost:3000/lichnii-kabinet/' + _id,
       )
     })
-    .catch(err => res.status(400).json({err}))
+    .catch(() =>
+      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+    )
 }
 
 module.exports.getAuthOrders = (req, res) => {
   const {id} = req.payload
-  if (!id) res.status(401).json({err: 'Unauthorized '})
+  if (!id)
+    res.status(401).json({err: 'Ошибка сервера авторизации', errCode: 40})
 
   Orders.find({user: id})
     .sort([['created', -1]])
     .then(data => res.status(200).json(data))
-    .catch(err =>
-      res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),
+    .catch(() =>
+      res.status(401).json({
+        err: 'Ошибка сервера, такой пользователь не найден',
+        errCode: 33,
+      }),
     )
 }
 
@@ -105,7 +126,9 @@ module.exports.sendEmail = (req, res) => {
   emailSender
     .sendEmail(email, phone, message)
     .then(() => res.status(200).json({status: 'Отправлено'}))
-    .catch(err => res.status(500).json({status: 'Ошибка сервера', err}))
+    .catch(() =>
+      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+    )
 }
 
 module.exports.getGuestOrder = (req, res) => {
@@ -116,11 +139,13 @@ module.exports.getGuestOrder = (req, res) => {
     .then(data => {
       if (!data)
         res
-          .status(404)
-          .json({err: 'Данных не найдено', errCode: 2, errMsg: err})
+          .status(401)
+          .json({err: 'Запрашеваемая транзакция не найдена', errCode: 34})
       res.status(200).json(data)
     })
-    .catch(err =>
-      res.status(404).json({err: 'Данных не найдено', errCode: 2, errMsg: err}),
+    .catch(() =>
+      res
+        .status(401)
+        .json({err: 'Ошибка сервера транзакций', errCode: 30}),
     )
 }

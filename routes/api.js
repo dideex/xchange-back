@@ -12,6 +12,8 @@ const auth = passport.authenticate('jwt', {
 
 router.get('/userData', auth, userData.getInfo)
 router.post('/userData', auth, userData.updateInfo)
+
+router.post('/signinUser', userData.signin)
 router.post('/signupUser', userData.signup)
 
 router.get('/order', orders.getGuestOrder)

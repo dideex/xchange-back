@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const jwt = require('jwt-simple')
+// const jwt = require('jwt-simple')
 const logger = require('morgan')
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -44,29 +44,6 @@ app.use(
 require('./config/passport-config')
 app.use(passport.initialize({userProperty: 'payload'}))
 app.use(passport.session())
-
-app.post('/token', function(req, res, next) {
-  passport.authenticate('loginUsers', (err, user) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      return res.status(401).send({error: 'Укажите правильный логин и пароль!'})
-    }
-    req.logIn(user, err => {
-      if (err) {
-        return next(err)
-      }
-      const payload = {
-        id: user._id,
-      }
-      const token = jwt.encode(payload, config.secret)
-
-      if (user.isAdmin) res.json({token, isAdmin: true})
-      else res.json({token})
-    })
-  })(req, res, next)
-})
 
 app.use('/api', routerApi)
 
