@@ -10,31 +10,31 @@ const auth = passport.authenticate('jwt', {
   session: false,
 })
 
-router.get('/userData', auth, userData.getInfo)
-router.post('/userData', auth, userData.updateInfo) // done
+router.get('/userData', auth, userData.getInfo) // postman
+router.post('/userData', auth, userData.updateInfo) // done postman
 
-router.post('/signinUser', userData.signin) // done
-router.post('/signupUser', userData.signup) // done
+router.post('/signinUser', userData.signin) // done  postman
+router.post('/signupUser', userData.signup) // done  postman
 
-router.get('/order', orders.getGuestOrder)
+router.get('/order', orders.getGuestOrder) // postman
 
-router.get('/currency', currency.getCurrency)
+router.get('/currency', currency.getCurrency) // postman
 
-router.get('/token', auth, userData.checkToken)
+router.get('/token', auth, userData.checkToken) // postman
 
-router.get('/orders', auth, orders.getAuthOrders)
-router.post('/orders', auth, orders.addOrder) // done
-router.post('/guestOrders', orders.addGuestOrder) // done
-router.post('/confirmOrder', orders.confirmOrder) // done
+router.get('/orders', auth, orders.getAuthOrders) // postman
+router.post('/orders', auth, orders.addOrder) // done  postman
+router.post('/guestOrders', orders.addGuestOrder) // done postman
+router.post('/confirmOrder', orders.confirmOrder) // done postman
 
-router.post('/sendMessage', orders.sendEmail) // done
+router.post('/sendMessage', orders.sendEmail) // done postman
 
-router.get('/summaryOrders', auth, admin.getTotalOrders)
-router.get('/summaryOrders/:status', auth, admin.getTotalOrders)
-router.get('/summaryOrderUserInfo/:id', auth, admin.summaryOrderUserInfo)
+router.get('/summaryOrders', auth, admin.getTotalOrders) // postman
+router.get('/summaryOrders/:status', auth, admin.getTotalOrders) // postman
+router.get('/summaryOrderUserInfo/:id', auth, admin.summaryOrderUserInfo) // postman
 
-router.post('/summaryOrderChangeStatus', auth, admin.summaryOrderChangeStatus) // none
-router.post('/setCurrencyOptions', auth, admin.setCurrencyOptions) // none
+router.post('/summaryOrderChangeStatus', auth, admin.summaryOrderChangeStatus) // none postman
+router.post('/setCurrencyOptions', auth, admin.setCurrencyOptions) // none postman
 
 
 module.exports = router

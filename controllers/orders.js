@@ -127,7 +127,8 @@ module.exports.getGuestOrder = (req, res) => {
         res
           .status(401)
           .json({err: 'Запрашеваемая транзакция не найдена', errCode: 34})
-      res.status(200).json(data)
+      else
+        res.status(200).json(data)
     })
     .catch(() =>
       res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),

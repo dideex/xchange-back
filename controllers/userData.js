@@ -4,7 +4,7 @@ const jwt = require('jwt-simple')
 const config = require('../config/config')
 const Orders = require('../models/orders')
 const passport = require('passport')
-const email = require('../utils/email')
+const regEmail = require('../utils/email')
 
 module.exports.checkToken = function(req, res) {
   const {id} = req.payload
@@ -36,7 +36,7 @@ module.exports.getInfo = function(req, res) {
 module.exports.updateInfo = function(req, res) {
   const {id} = req.payload
   const {wallets, username, email} = req.body
-  if (!emailValid.test(email) || !wallets)
+  if (!regEmail.test(email) || !wallets)
     return res.status(401).json({err: 'Введите все данные', errCode: 35})
   const User = mongoose.model('login')
   User.findOneAndUpdate({_id: id}, {wallets, username, email})
@@ -47,7 +47,7 @@ module.exports.updateInfo = function(req, res) {
         res.status(400).json({err: 'Такой пользователь не найден', errCode: 47})
       }
     })
-    .catch(err => {
+    .catch(() => {
       res.status(400).json({err: 'Не удалось сохранить профиль', errCode: 41})
     })
 }
@@ -55,11 +55,8 @@ module.exports.updateInfo = function(req, res) {
 module.exports.signup = function(req, res) {
   const User = mongoose.model('login')
   const {username, login, password, email} = req.body
-  emailReg = new RegExp(
-    `^(([^<>()\\[\\]\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$`,
-  )
 
-  if (!emailReg.test(email))
+  if (!regEmail.test(email))
     return res.status(401).json({err: 'Введите email', errCode: 42})
   if (!password)
     return res.status(401).json({err: 'Введите пароль', errCode: 43})

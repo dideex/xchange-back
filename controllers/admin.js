@@ -17,12 +17,10 @@ module.exports.getTotalOrders = (req, res) => {
               .sort([['created', -1]])
               .then(data => res.status(200).json(data))
               .catch(() =>
-                res
-                  .status(401)
-                  .json({
-                    err: 'Ошибка сервера управления, транзакции не найдено',
-                    errCode: 12,
-                  }),
+                res.status(401).json({
+                  err: 'Ошибка сервера управления, транзакции не найдено',
+                  errCode: 12,
+                }),
               )
             break
           case 'closed':
@@ -30,12 +28,10 @@ module.exports.getTotalOrders = (req, res) => {
               .sort([['created', -1]])
               .then(data => res.status(200).json(data))
               .catch(() =>
-                res
-                  .status(401)
-                  .json({
-                    err: 'Ошибка сервера управления, транзакции не найдено',
-                    errCode: 12,
-                  }),
+                res.status(401).json({
+                  err: 'Ошибка сервера управления, транзакции не найдено',
+                  errCode: 12,
+                }),
               )
             break
           case 'expectation':
@@ -43,12 +39,10 @@ module.exports.getTotalOrders = (req, res) => {
               .sort([['created', -1]])
               .then(data => res.status(200).json(data))
               .catch(() =>
-                res
-                  .status(401)
-                  .json({
-                    err: 'Ошибка сервера управления, транзакции не найдено',
-                    errCode: 12,
-                  }),
+                res.status(401).json({
+                  err: 'Ошибка сервера управления, транзакции не найдено',
+                  errCode: 12,
+                }),
               )
             break
           case 'created':
@@ -56,12 +50,10 @@ module.exports.getTotalOrders = (req, res) => {
               .sort([['created', -1]])
               .then(data => res.status(200).json(data))
               .catch(() =>
-                res
-                  .status(401)
-                  .json({
-                    err: 'Ошибка сервера управления, транзакции не найдено',
-                    errCode: 12,
-                  }),
+                res.status(401).json({
+                  err: 'Ошибка сервера управления, транзакции не найдено',
+                  errCode: 12,
+                }),
               )
             break
           case 'denied':
@@ -114,6 +106,8 @@ module.exports.summaryOrderChangeStatus = (req, res) => {
   const {_id, paymentStatus} = req.body
   const User = mongoose.model('login')
   const Orders = mongoose.model('order')
+  // FIXME: (node:11120) UnhandledPromiseRejectionWarning: undefined
+  // Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 3)
   User.findOne({_id: id})
     .then(({isAdmin}) => {
       if (!isAdmin)
