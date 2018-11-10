@@ -2,6 +2,8 @@ const Orders = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
 const Currency = require('../models/currency.js')
 const Telegram = require('../bot')
+const rate = require('../config/config.json').rateExchange
+const emailValid = require('../utils/email')
 
 const validateOrder = async order => {
   if (
@@ -17,13 +19,12 @@ const validateOrder = async order => {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
       errCode: 32,
     }
-  //FIXME: fix the currencies difference
-  // const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
-  // if (threshold > 1 || threshold !== threshold)
-  //   return {
-  //   err: 'Ошибка синхронизации с сервером, обновите страницу',
-  //   errCode: 32,
-  // }
+  const threshold = Math.abs(+inputValue * rateExchange * rate - +outputValue)
+  if (threshold > 0.01 || threshold !== threshold)
+    return {
+      err: 'Ошибка синхронизации с сервером, обновите страницу',
+      errCode: 32,
+    }
   return {success: true}
 }
 
@@ -43,66 +44,48 @@ module.exports.addOrder = async (req, res) => {
   }
 }
 
-module.exports.addGuestOrder = (req, res) => {
-  const {
-    inputValue,
-    outputValue,
-    currencyInput,
-    currencyOutput,
-    outputValueInUsd,
-    currencyInputLabel,
-    currencyOutputLabel,
-    paymentStatus,
-    fromWallet,
-    toWallet,
-    email,
-  } = req.body
+module.exports.addGuestOrder = async (req, res) => {
+  const orderData = {user: 'Guest', ...req.body}
+  const valid = await validateOrder(orderData)
 
-  const Order = new Orders({
-    user: 'Guest',
-    inputValue,
-    outputValue,
-    currencyInput,
-    currencyOutput,
-    outputValueInUsd,
-    currencyInputLabel,
-    currencyOutputLabel,
-    fromWallet,
-    toWallet,
-    paymentStatus,
-    email,
-  })
+  if (valid.err) res.status(401).json(valid)
+  else {
+    const Order = new Orders(orderData)
 
-  Order.save()
-    .then(result => res.status(201).json({result}))
-    .catch(() =>
-      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
-    )
+    Order.save()
+      .then(result => res.status(201).json({result}))
+      .catch(() =>
+        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+      )
+  }
 }
 
 module.exports.confirmOrder = (req, res) => {
   const {_id, value, currency, email} = req.body
-  Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
-    .then(result => {
-      Telegram.sendMessage(
-        `Был создан перевод на сумму ${value} ${currency} \r\n ссылка`,
+  if (!emailValid.test(email) || !value || !currency || !_id)
+    res.status(401).json({err: 'Введите все данные', errCode: 35})
+  else
+    Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
+      .then(result => {
+        Telegram.sendMessage(
+          `Был создан перевод на сумму ${value} ${currency} \r\n ссылка`,
+        )
+        res.status(201).json({result})
+        emailSender.notificationByEmail(
+          value,
+          currency,
+          'http://localhost:3000/summary/' + _id,
+        )
+        emailSender.userNotificationByEmail(
+          email,
+          value,
+          currency,
+          'http://localhost:3000/lichnii-kabinet/' + _id,
+        )
+      })
+      .catch(() =>
+        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
       )
-      res.status(201).json({result})
-      emailSender.notificationByEmail(
-        value,
-        currency,
-        'http://localhost:3000/summary/' + _id,
-      )
-      emailSender.userNotificationByEmail(
-        email,
-        value,
-        currency,
-        'http://localhost:3000/lichnii-kabinet/' + _id,
-      )
-    })
-    .catch(() =>
-      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
-    )
 }
 
 module.exports.getAuthOrders = (req, res) => {
@@ -123,12 +106,15 @@ module.exports.getAuthOrders = (req, res) => {
 
 module.exports.sendEmail = (req, res) => {
   const {email, phone, message} = req.body
-  emailSender
-    .sendEmail(email, phone, message)
-    .then(() => res.status(200).json({status: 'Отправлено'}))
-    .catch(() =>
-      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
-    )
+  if (!emailValid.test(email) || !phone)
+    res.status(401).json({err: 'Введите все данные', errCode: 35})
+  else
+    emailSender
+      .sendEmail(email, phone, message)
+      .then(() => res.status(200).json({status: 'Отправлено'}))
+      .catch(() =>
+        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+      )
 }
 
 module.exports.getGuestOrder = (req, res) => {
@@ -144,8 +130,6 @@ module.exports.getGuestOrder = (req, res) => {
       res.status(200).json(data)
     })
     .catch(() =>
-      res
-        .status(401)
-        .json({err: 'Ошибка сервера транзакций', errCode: 30}),
+      res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
     )
 }

@@ -25,12 +25,12 @@ passport.deserializeUser((id, done) => {
 passport.use(
   'loginUsers',
   new LocalStrategy((login, password, done) => {
-    // console.log('loginUser', login)
     User.findOne({login})
-      .then(
-        user =>
-          user.validPassword(password) ? done(null, user) : done(null, false),
-      )
+      .then(user => {
+        if (user)
+          user.validPassword(password) ? done(null, user) : done(null, false)
+        else done(null, false)
+      })
       .catch(err => {
         console.log(err)
         done(err)
@@ -41,11 +41,10 @@ passport.use(
 const strategy = new Strategy(params, (payload, done) => {
   const User = mongoose.model('login')
   User.find({_id: payload.id})
-    .then(
-      user =>
-        user
-          ? done(null, {id: payload.id})
-          : done(new Error('User not found'), null),
+    .then(user =>
+      user
+        ? done(null, {id: payload.id})
+        : done(new Error('User not found'), null),
     )
     .catch(err => {
       console.log('from strategy ', err)

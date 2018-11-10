@@ -4,6 +4,7 @@ const jwt = require('jwt-simple')
 const config = require('../config/config')
 const Orders = require('../models/orders')
 const passport = require('passport')
+const email = require('../utils/email')
 
 module.exports.checkToken = function(req, res) {
   const {id} = req.payload
@@ -35,17 +36,19 @@ module.exports.getInfo = function(req, res) {
 module.exports.updateInfo = function(req, res) {
   const {id} = req.payload
   const {wallets, username, email} = req.body
+  if (!emailValid.test(email) || !wallets)
+    return res.status(401).json({err: 'Введите все данные', errCode: 35})
   const User = mongoose.model('login')
   User.findOneAndUpdate({_id: id}, {wallets, username, email})
     .then(results => {
       if (results) {
         res.json(results)
       } else {
-        res.status(400).json({err: "Такой пользователь не найден", errCode: 47})
+        res.status(400).json({err: 'Такой пользователь не найден', errCode: 47})
       }
     })
     .catch(err => {
-      res.status(400).json({err: "Не удалось сохранить профиль", errCode: 41})
+      res.status(400).json({err: 'Не удалось сохранить профиль', errCode: 41})
     })
 }
 
@@ -66,9 +69,10 @@ module.exports.signup = function(req, res) {
   User.findOne({login})
     .then(user => {
       if (user) {
-        res
-          .status(400)
-          .json({err: 'Пользователь с таким именем уже существует', errCode: 46})
+        res.status(400).json({
+          err: 'Пользователь с таким именем уже существует',
+          errCode: 46,
+        })
       } else {
         const newUser = new User()
         newUser.login = login
@@ -90,9 +94,11 @@ module.exports.signup = function(req, res) {
               return res.status(201).json({token})
             })
           })
-          .catch(() => res
-            .status(400)
-            .json({err: 'Ошибка сервера авторизации', errCode: 40}))
+          .catch(() =>
+            res
+              .status(400)
+              .json({err: 'Ошибка сервера авторизации', errCode: 40}),
+          )
       }
     })
     .catch(() => {
@@ -106,7 +112,9 @@ module.exports.signin = (req, res) => {
       return next(err)
     }
     if (!user) {
-      return res.status(401).send({err: 'Укажите логин и пароль', errCode: 48})
+      return res
+        .status(401)
+        .send({err: 'Укажите правильные логин и пароль', errCode: 48})
     }
     req.logIn(user, err => {
       if (err) {
