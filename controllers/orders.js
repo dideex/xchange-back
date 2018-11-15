@@ -19,7 +19,7 @@ const validateOrder = async order => {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
       errCode: 32,
     }
-  const threshold = Math.abs(+inputValue * rateExchange * rate - +outputValue)
+  const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
   if (threshold > 0.01 || threshold !== threshold)
     return {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
@@ -45,7 +45,7 @@ module.exports.addOrder = async (req, res) => {
 }
 
 module.exports.addGuestOrder = async (req, res) => {
-  const orderData = {user: 'Guest', ...req.body}
+  const orderData = {user: 'Guest', ...req.body, token: true}
   const valid = await validateOrder(orderData)
 
   if (valid.err) res.status(401).json(valid)
@@ -61,14 +61,14 @@ module.exports.addGuestOrder = async (req, res) => {
 }
 
 module.exports.confirmOrder = (req, res) => {
-  const {_id, value, currency, email} = req.body
+  const {_id, value, currency, email, token} = req.body
   if (!emailValid.test(email) || !value || !currency || !_id)
     res.status(401).json({err: 'Введите все данные', errCode: 35})
   else
     Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
       .then(result => {
         Telegram.sendMessage(
-          `Был создан перевод на сумму ${value} ${currency} \r\n ссылка`,
+          `Был создан перевод на сумму ${value} ${currency} \r\n ссылка http://localhost:3000/summary/${_id}`,
         )
         res.status(201).json({result})
         emailSender.notificationByEmail(
@@ -76,12 +76,10 @@ module.exports.confirmOrder = (req, res) => {
           currency,
           'http://localhost:3000/summary/' + _id,
         )
-        emailSender.userNotificationByEmail(
-          email,
-          value,
-          currency,
-          'http://localhost:3000/lichnii-kabinet/' + _id,
-        )
+        const userLink = token
+          ? `http://localhost:3000/lichnii-kabinet/${_id}`
+          : `http://localhost:3000/perevod/${_id}`
+        emailSender.userNotificationByEmail(email, value, currency, userLink)
       })
       .catch(() =>
         res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
@@ -127,8 +125,7 @@ module.exports.getGuestOrder = (req, res) => {
         res
           .status(401)
           .json({err: 'Запрашеваемая транзакция не найдена', errCode: 34})
-      else
-        res.status(200).json(data)
+      else res.status(200).json(data)
     })
     .catch(() =>
       res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
