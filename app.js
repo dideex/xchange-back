@@ -9,10 +9,11 @@ const passport = require('passport')
 const config = require('./config/config')
 const routerApi = require('./routes/api')
 const cors = require('cors')
+const mongoConfig = require('./config/config.json').mongodb
 
 mongoose.Promise = global.Promise
 mongoose.connect(
-  'mongodb://localhost:27017/jwt',
+  mongoConfig,
   {useMongoClient: true},
 )
 
