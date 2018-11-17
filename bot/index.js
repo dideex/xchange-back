@@ -7,17 +7,11 @@ const Agent = require('socks5-https-client/lib/Agent')
 const bot = new TelegramBot(token, {
   polling: true,
   request: {
-    proxy: 'http://localhost:8118/',
+    proxy,
+    // proxy: 'http://localhost:8118/',
     // agentClass: Agent,
     // agentOptions: proxy
   },
-})
-
-bot.on('message', msg => {
-  const chatId = msg.chat.id
-  console.log(' LOG ___ msg ', msg)
-  // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, 'Received your message')
 })
 
 module.exports.sendMessage = message => {
