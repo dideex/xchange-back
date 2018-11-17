@@ -13,6 +13,12 @@ const bot = new TelegramBot(token, {
   },
 })
 
+bot.on('message', msg => {
+  const chatId = msg.chat.id
+  console.log(' LOG ___ msg ', msg)
+  // send a message to the chat acknowledging receipt of their message
+  bot.sendMessage(chatId, 'Received your message')
+})
 
 module.exports.sendMessage = message => {
   bot.sendMessage(adminId, message)
