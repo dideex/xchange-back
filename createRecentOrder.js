@@ -10,7 +10,7 @@ const getEmail = () => {
   const firstLetter = String.fromCharCode(randomIntegerTo(25) + 65)
   const lastLetter = String.fromCharCode(randomIntegerTo(25) + 97)
   const domain = mails[randomIntegerTo(mails.length - 1)]
-  const email = `${firstLetter}${'*'.repeat(
+  const email = `${firstLetter}***${'*'.repeat(
     randomIntegerTo(8),
   )}${lastLetter}@${domain}`
   return {email}
