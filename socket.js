@@ -28,7 +28,7 @@ io.on('connection', client => {
     Operation.find({}, null, {sort: {created: 1}}).then(async res => {
       if (res.length >= 3)
         await Operation.findOneAndRemove({created: res[0].created}, err =>
-          console.log('deleted', err),
+          {},
         )
       const operation = new Operation(order)
       operation.save().then(() => {
@@ -39,4 +39,4 @@ io.on('connection', client => {
 })
 
 io.listen(port)
-console.log(`server running on port ${port}`)
+// console.log(`server running on port ${port}`)

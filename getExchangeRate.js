@@ -6,14 +6,11 @@ require('./models/currency')
 
 mongoose.Promise = global.Promise
 mongoose.connect(
-  'mongodb://localhost:27017/jwt',
+  'mongodb://localhost:27017/xchange',
   {useMongoClient: true},
 )
 
 const Currency = mongoose.model('currency')
-
-const rate = 1.1
-
 
 const mockData = [
   {
@@ -314,34 +311,33 @@ const createTotalSchema = () =>
     ),
   )
 
-const fetchCrypto = () =>
-  fetch('https://api.coinmarketcap.com/v1/ticker/')
+const fetchCrypto = async () =>
+  await fetch('https://api.coinmarketcap.com/v1/ticker/')
     .then(response => response.json())
     .then(data => {
-      const filteredDara = data.map(currency => ({
+      const filteredData = data.map(currency => ({
         ...currency,
         label: currency.symbol,
         change: currency.percent_change_24h,
         type: 'crypto',
       }))
-      // Currency.find({'entities.id': {$exists: true}}).then(data => {
-      //   // if (!data[0]) createTotalSchema()
-      // })
-      filteredDara.map(row => {
-        Currency.update({id: row.id}, {$set: row}, () => console.log('done'))
 
-        // Currency.update({id: row.id}, {$push: {...row}}, () => console.log('done'))
-        // const newCurrency = new Currency({row})
-        // newCurrency.save().then(() => console.log('done'))
-      })
+      return Promise.all(
+        filteredData.map(
+          row =>
+            new Promise(res =>
+              Currency.update({id: row.id}, {$set: row}, () => res()),
+            ),
+        ),
+      )
     })
 
 const fetchValutes = () =>
   fetch('https://www.cbr-xml-daily.ru/daily_json.js')
     .then(response => response.json())
     .then(({Valute}) => {
-      const data = {}             // 440 322,119 x 1    / 6 475,563 x 1    7 123,12 x 1    5 886,876 x 1
-      const rublPrice = 1 / Valute.USD.Value * rateExchange // 1 / 67.9975
+      const data = {} // 440 322,119 x 1    / 6 475,563 x 1    7 123,12 x 1    5 886,876 x 1
+      const rublPrice = (1 / Valute.USD.Value) * rateExchange // 1 / 67.9975
       const rublPricePrev = 1 / Valute.USD.Previous
       const bases = ['Ruble', 'Euro', 'usd']
 
@@ -352,7 +348,7 @@ const fetchValutes = () =>
       }
       data['Euro'] = {
         base: 'Euro',
-        price_usd: Valute.EUR.Value / Valute.USD.Value  * rateExchange,
+        price_usd: (Valute.EUR.Value / Valute.USD.Value) * rateExchange,
         change: Valute.EUR.Previous - Valute.EUR.Value,
       }
       data['usd'] = {
@@ -370,14 +366,9 @@ const fetchValutes = () =>
         ),
       )
     })
-// createTotalSchema()
+
 createTotalSchema().then(() =>
-  fetchValutes().then(() =>
-    fetchCrypto().then(() => {
-      console.log('done')
-      process.exit(1)
-    }),
-  ),
+  fetchValutes().then(() => fetchCrypto().then(() => process.exit(0))),
 )
 // updateTotalSchema().then(() => fetchCrypto().then(() => fetchValutes()))
 // fetchCrypto()
