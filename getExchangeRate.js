@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const fetch = require('node-fetch')
 const {rateExchange} = require('./config/config.json')
+const cron = require('cron').CronJob
 
 require('./models/currency')
 
@@ -367,8 +368,16 @@ const fetchValutes = () =>
       )
     })
 
-createTotalSchema().then(() =>
-  fetchValutes().then(() => fetchCrypto().then(() => process.exit(0))),
-)
 // updateTotalSchema().then(() => fetchCrypto().then(() => fetchValutes()))
 // fetchCrypto()
+
+new cron(
+  '* 60 * * * *',
+  function() {
+    createTotalSchema().then(() =>
+      fetchValutes().then(() => fetchCrypto().then(() => process.exit(0))),
+    )
+  },
+  null,
+  true,
+)

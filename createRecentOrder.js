@@ -1,4 +1,5 @@
 const openSocket = require('socket.io-client')
+const cron = require('cron').CronJob
 
 socket = openSocket('http://localhost:3040')
 
@@ -16,8 +17,8 @@ const getEmail = () => {
   return {email}
 }
 
-const getValue = () => { 
-  const amount = Math.random() * .2
+const getValue = () => {
+  const amount = Math.random() * 0.2
   const data =
     Math.random() > 0.5
       ? {
@@ -37,8 +38,15 @@ const getValue = () => {
   return data
 }
 
-socket.emit('newOrder', {
-  ...getEmail(),
-  paymentStatus: Math.round(Math.random()) + 1,
-  ...getValue(),
-})
+new cron(
+  '* 60 * * * *',
+  function() {
+    socket.emit('newOrder', {
+      ...getEmail(),
+      paymentStatus: Math.round(Math.random()) + 1,
+      ...getValue(),
+    })
+  },
+  null,
+  true,
+)
