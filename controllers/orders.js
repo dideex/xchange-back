@@ -19,7 +19,7 @@ const validateOrder = async order => {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
       errCode: 32,
     }
-  const threshold = Math.abs(+inputValue * rateExchange - +outputValue)
+  const threshold = Math.abs(+inputValue * rateExchange * rate - +outputValue)
   if (threshold > 0.01 || threshold !== threshold)
     return {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
@@ -33,13 +33,13 @@ module.exports.addOrder = async (req, res) => {
   const orderData = {user: id, ...req.body}
   const valid = await validateOrder(orderData)
 
-  if (valid.err) res.status(401).json(valid)
+  if (valid.err) res.status(500).json(valid)
   else {
     const Order = new Orders(orderData)
     Order.save()
       .then(result => res.status(201).json({result}))
       .catch(() =>
-        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+        res.status(500).json({err: 'Ошибка сервера транзакций', errCode: 30}),
       )
   }
 }
@@ -48,14 +48,14 @@ module.exports.addGuestOrder = async (req, res) => {
   const orderData = {user: 'Guest', ...req.body, token: true}
   const valid = await validateOrder(orderData)
 
-  if (valid.err) res.status(401).json(valid)
+  if (valid.err) res.status(500).json(valid)
   else {
     const Order = new Orders(orderData)
 
     Order.save()
       .then(result => res.status(201).json({result}))
       .catch(() =>
-        res.status(401).json({err: 'Ошибка сервера транзакций', errCode: 30}),
+        res.status(500).json({err: 'Ошибка сервера транзакций', errCode: 30}),
       )
   }
 }

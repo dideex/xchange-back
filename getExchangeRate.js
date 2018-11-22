@@ -1,13 +1,14 @@
 const mongoose = require('mongoose')
 const fetch = require('node-fetch')
-const {rateExchange} = require('./config/config.json')
+// const {rateExchange} = require('./config/config.json')
+const {mongodb} = require('./config/config.json')
 const cron = require('cron').CronJob
 
 require('./models/currency')
 
 mongoose.Promise = global.Promise
 mongoose.connect(
-  'mongodb://localhost:27017/xchange',
+  mongodb,
   {useMongoClient: true},
 )
 
@@ -337,8 +338,8 @@ const fetchValutes = () =>
   fetch('https://www.cbr-xml-daily.ru/daily_json.js')
     .then(response => response.json())
     .then(({Valute}) => {
-      const data = {} // 440 322,119 x 1    / 6 475,563 x 1    7 123,12 x 1    5 886,876 x 1
-      const rublPrice = (1 / Valute.USD.Value) * rateExchange // 1 / 67.9975
+      const data = {} // 1 = 5 886,876;   1 = 388 493,181 || 1 = 395 539,939
+      const rublPrice = 1 / Valute.USD.Value // 1 / 67.9975
       const rublPricePrev = 1 / Valute.USD.Previous
       const bases = ['Ruble', 'Euro', 'usd']
 
@@ -349,12 +350,12 @@ const fetchValutes = () =>
       }
       data['Euro'] = {
         base: 'Euro',
-        price_usd: (Valute.EUR.Value / Valute.USD.Value) * rateExchange,
+        price_usd: Valute.EUR.Value / Valute.USD.Value,
         change: Valute.EUR.Previous - Valute.EUR.Value,
       }
       data['usd'] = {
         base: 'usd',
-        price_usd: 1 * rateExchange,
+        price_usd: 1,
         change: 0,
       }
 
@@ -371,11 +372,19 @@ const fetchValutes = () =>
 // updateTotalSchema().then(() => fetchCrypto().then(() => fetchValutes()))
 // fetchCrypto()
 
+createTotalSchema().then(() =>
+  fetchValutes().then(() =>
+    fetchCrypto().then(() => {
+      process.exit(0)
+    }),
+  ),
+)
+
 new cron(
   '* 60 * * * *',
   function() {
     createTotalSchema().then(() =>
-      fetchValutes().then(() => fetchCrypto().then(() => process.exit(0))),
+      fetchValutes().then(() => fetchCrypto().then(() => {})),
     )
   },
   null,
