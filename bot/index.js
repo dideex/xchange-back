@@ -7,10 +7,10 @@ const Agent = require('socks5-https-client/lib/Agent')
 const bot = new TelegramBot(token, {
   polling: true,
   request: {
-    proxy,
+    // proxy,
     // proxy: 'http://localhost:8118/',
-    // agentClass: Agent,
-    // agentOptions: proxy
+    agentClass: Agent,
+    agentOptions: proxy
   },
 })
 
