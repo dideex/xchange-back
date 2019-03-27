@@ -1,7 +1,7 @@
 const Orders = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
 const Currency = require('../models/currency.js')
-const Telegram = require('../bot')
+// const Telegram = require('../bot')
 const rate = require('../config/config.json').rateExchange
 const emailValid = require('../utils/email')
 
@@ -67,9 +67,9 @@ module.exports.confirmOrder = (req, res) => {
   else
     Orders.findOneAndUpdate({_id}, {$set: {paymentStatus: 2}})
       .then(result => {
-        Telegram.sendMessage(
-          `Был создан перевод на сумму ${value} ${currency} \r\n ссылка http://localhost:3000/summary/${_id}`,
-        )
+        // Telegram.sendMessage(
+        //   `Был создан перевод на сумму ${value} ${currency} \r\n ссылка http://localhost:3000/summary/${_id}`,
+        // )
         res.status(201).json({result})
         emailSender.notificationByEmail(
           value,

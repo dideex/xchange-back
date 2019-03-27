@@ -1,0 +1,43 @@
+[
+  {
+    "_id": "5bd2f9d68d666439887cdf7e",
+    "hash": "$2a$10$GdeIpWb3TV2n/XCOo7exAOTtsrIMzbQohVUL0ImXlzP80sh381OCm",
+    "login": "didex",
+    "lastOperations": [],
+    "__v": 0,
+    "wallets": {
+      "0": "0234 5678 1234 5678",
+      "1": "1765 4321 1234 5678",
+      "2": "2765 4321 1234 5678",
+      "3": "3765 4321 1234 5678"
+    }
+  },
+  {
+    "_id": "5bd2f9e411b08e39484c7017",
+    "hash": "$2a$10$gLZPiLxndrjoUKt6yMfiGe9KxK2kBJskJfuJWygpFdBsM/oSOxKtW",
+    "login": "root",
+    "lastOperations": [],
+    "__v": 0,
+    "wallets": {
+      "0": "1KFzzGtDdnq5hrwxXGjwVnKzRbvf8WVxck",
+      "1": "0x6B2858D7a4bef9F9E372D8C0D2333DcA5dDfd8d9",
+      "2": "1231 2312 3123 1231",
+      "3": "",
+      "5": "1231 2312 3123 1231",
+      "6": "LXgt8Zuizansr3czDHoARLEumbAu83RKsa",
+      "7": "1231 2312 3123 1231",
+      "16": "1231 2312 3123 1231",
+      "18": "1231 2312 3123 1231",
+      "19": "1231 2312 3123 1231",
+      "20": "1231 2312 3123 1231",
+      "21": "1234 5123 1231 2312",
+      "22": "1231 2312 3123 1231",
+      "23": "1231 2312 3123 1231",
+      "25": "1231 2312 3123 1231"
+    },
+    "email": "wc34fun@mail.ru",
+    "username": "New user name",
+    "fullname": "fullname",
+    "isAdmin": true
+  }
+]

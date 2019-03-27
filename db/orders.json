@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "5be026271460752dfcb58625",
+    "user": "5bd2f9e411b08e39484c7017",
+    "inputValue": "1",
+    "outputValue": "417801.558",
+    "currencyInput": "bitcoin",
+    "currencyOutput": "sberRu",
+    "paymentStatus": "1",
+    "fromWallet": "1234",
+    "toWallet": "4321",
+    "created": "2018-11-05T11:14:47.423Z",
+    "__v": 0,
+    "outputValueInUsd": "100"
+  },
+  {
+    "_id": "5be0281838cbc942dc1fa7cb",
+    "user": "5bd2f9e411b08e39484c7017",
+    "inputValue": "1",
+    "outputValue": "417801.558",
+    "currencyInput": "bitcoin",
+    "currencyOutput": "sberRu",
+    "paymentStatus": "4",
+    "fromWallet": "1234",
+    "toWallet": "4321",
+    "created": "2018-11-05T11:23:04.716Z",
+    "__v": 0,
+    "outputValueInUsd": "100"
+  }
+]

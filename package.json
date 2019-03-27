@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "fixtures": "cross-env NODE_ENV=test node ./helpers/init-dump.js",
+    "test:e2e": "cross-env NODE_ENV=test npm-run-all -p start:app start:wsServer",
+    "start": "node app.js",
+    "start:app": "node app.js",
+    "start:wsServer": "node socket.js",
+    "dev": "npm-run-all -p start:app start:wsServer"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +23,7 @@
     "express": "^4.16.1",
     "express-session": "^1.15.6",
     "jwt-simple": "^0.5.1",
-    "mongoose": "^4.12.3",
+    "mongoose": "^5.4.4",
     "morgan": "^1.9.1",
     "mubsub": "^1.4.0",
     "node-fetch": "^2.2.0",
@@ -33,6 +37,8 @@
     "socks5-https-client": "^1.2.1"
   },
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.5"
   }
 }

@@ -9,13 +9,10 @@ const passport = require('passport')
 const config = require('./config/config')
 const routerApi = require('./routes/api')
 const cors = require('cors')
-const mongoConfig = require('./config/config.json').mongodb
+const mongoConfig = require('./config').mongodb
 
 mongoose.Promise = global.Promise
-mongoose.connect(
-  mongoConfig,
-  {useMongoClient: true},
-)
+mongoose.connect(mongoConfig, {useMongoClient: true})
 
 require('./models/user')
 
@@ -57,6 +54,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({err: '500'})
 })
 
-app.listen(3030, function() {
-  console.log('Server running. Use our API 3030')
+const PORT = process.env.PORT || 3030
+app.listen(PORT, function() {
+  console.log(`Server running. Use our API ${PORT}`)
 })

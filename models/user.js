@@ -13,7 +13,7 @@ const UserSchema = new Schema({
   phone: String,
   email: String,
   moneyConverted: Number,
-  isAdmin: Boolean
+  isAdmin: Boolean,
 })
 
 UserSchema.methods.setPassword = function(password) {
@@ -24,5 +24,6 @@ UserSchema.methods.validPassword = function(password) {
   return bCrypt.compareSync(password, this.hash)
 }
 
-//просим mongoose сохранить модель для ее дальнейшего использования
-mongoose.model('login', UserSchema)
+const User = mongoose.model('login', UserSchema)
+
+module.exports = {User, UserSchema}

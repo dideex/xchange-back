@@ -1,0 +1,25 @@
+{
+  "rateExchange": 0.9,
+  "secret": "secret",
+  "session": "session",
+  "mongodb": "mongodb://localhost:27017/xchange-test",
+  "telegram": {
+    "token": "token",
+    "proxy2": "http://localhost:9150",
+    "proxy": {
+      "socksHost": "localhost",
+      "socksPort": 9150
+    },
+    "adminId": "adminId"
+  },
+  "mail": {
+    "subject": "Сообщение с сайта",
+    "auth": {},
+    "smtp": {
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure": true,
+      "auth": {}
+    }
+  }
+}

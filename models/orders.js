@@ -18,9 +18,10 @@ const OrdersSchema = new Schema({
 })
 
 const Orders = mongoose.model('order', OrdersSchema)
-module.exports = Orders
 
-module.exports.getConvertedAmount = user =>
+const getConvertedAmount = user =>
   Orders.find({user, paymentStatus: 3}).then(data =>
     data.reduce((amount, order) => amount + +order.outputValueInUsd, 0),
   )
+
+module.exports = {Orders, getConvertedAmount, OrdersSchema}

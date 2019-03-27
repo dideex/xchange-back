@@ -12,4 +12,6 @@ const OperationsSchema = new Schema({
   created: {type: Date, default: Date.now},
 })
 
-mongoose.model('operations', OperationsSchema)
+const Operations = mongoose.model('operations', OperationsSchema)
+
+module.exports = {OperationsSchema, Operations}

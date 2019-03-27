@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "5bf17b2677600a40b82d51a2",
+    "email": "O*******b@gmail.com",
+    "paymentStatus": "1",
+    "currency": "Bitcoin",
+    "outputValue": "0.19562330581923432",
+    "inputValue": "81595.26335042591",
+    "inputLabel": "RUR",
+    "outputLabel": "BTC",
+    "created": "2018-11-18T14:45:58.450Z",
+    "__v": 0
+  },
+  {
+    "_id": "5bf17b2777600a40b82d51a3",
+    "email": "S******f@gmail.com",
+    "paymentStatus": "1",
+    "currency": "Bitcoin",
+    "outputValue": "0.18864547543881605",
+    "inputValue": "78684.78238743193",
+    "inputLabel": "RUR",
+    "outputLabel": "BTC",
+    "created": "2018-11-18T14:45:59.577Z",
+    "__v": 0
+  },
+  {
+    "_id": "5bf3aef9a7b8ab4d14e6c1e6",
+    "email": "w*****n@mail.ru",
+    "currency": "Bitcoin",
+    "inputValue": "359581.7629713535",
+    "outputValue": "1",
+    "inputLabel": "RUR",
+    "outputLabel": "BTC",
+    "paymentStatus": "2",
+    "created": "2018-11-20T06:51:37.478Z",
+    "__v": 0
+  }
+]
