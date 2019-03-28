@@ -1,6 +1,6 @@
-const Orders = require('../models/orders')
+const {Orders} = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
-const Currency = require('../models/currency.js')
+const {Currency} = require('../models/currency')
 // const Telegram = require('../bot')
 const rate = require('../config/config.json').rateExchange
 const emailValid = require('../utils/email')

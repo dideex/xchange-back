@@ -2,10 +2,8 @@ const mongoose = require('mongoose')
 require('./models/RecentOperations')
 
 mongoose.Promise = global.Promise
-mongoose.connect(
-  'mongodb://localhost:27017/jwt',
-  {useMongoClient: true},
-)
+const mongoConfig = require('./config').mongodb
+mongoose.connect(mongoConfig, {useMongoClient: true})
 const Operation = mongoose.model('operations')
 
 const io = require('socket.io')()
@@ -27,9 +25,7 @@ io.on('connection', client => {
 
     Operation.find({}, null, {sort: {created: 1}}).then(async res => {
       if (res.length >= 3)
-        await Operation.findOneAndRemove({created: res[0].created}, err =>
-          {},
-        )
+        await Operation.findOneAndRemove({created: res[0].created}, err => {})
       const operation = new Operation(order)
       operation.save().then(() => {
         client.broadcast.send({type: 'broadcast', order})
@@ -39,4 +35,3 @@ io.on('connection', client => {
 })
 
 io.listen(port)
-// console.log(`server running on port ${port}`)

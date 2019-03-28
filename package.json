@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "fixtures": "cross-env NODE_ENV=test node ./helpers/init-dump.js",
+    "fixtures": "node ./helpers/init-dump.js",
     "test:e2e": "cross-env NODE_ENV=test npm-run-all -p start:app start:wsServer",
     "start": "node app.js",
     "start:app": "node app.js",
