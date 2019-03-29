@@ -1,6 +1,6 @@
 const {Orders} = require('../models/orders')
 const emailSender = require('../utils/sendEmail')
-const {Currency} = require('../models/currency')
+const {Currency, getRate} = require('../models/currency')
 // const Telegram = require('../bot')
 const rate = require('../config/config.json').rateExchange
 const emailValid = require('../utils/email')
@@ -13,7 +13,7 @@ const validateOrder = async order => {
     return {err: 'Введите все поля', errCode: 31}
   const {inputValue, outputValue, currencyInput, currencyOutput} = order
 
-  const rateExchange = await Currency.getRate(currencyInput, currencyOutput)
+  const rateExchange = await getRate(currencyInput, currencyOutput)
   if (rateExchange === null)
     return {
       err: 'Ошибка синхронизации с сервером, обновите страницу',
