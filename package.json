@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "fixtures": "node ./helpers/init-dump.js",
-    "test:e2e": "cross-env NODE_ENV=test npm-run-all -p start:app start:wsServer",
+    "start:e2e": "cross-env NODE_ENV=test npm-run-all -p start:app start:wsServer",
     "start": "node app.js",
     "start:app": "node app.js",
     "start:wsServer": "node socket.js",

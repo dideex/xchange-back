@@ -122,8 +122,8 @@ module.exports.signin = (req, res) => {
       }
       const token = jwt.encode(payload, config.secret)
 
-      if (user.isAdmin) res.json({token, isAdmin: true})
-      else res.json({token})
+      res.cookie('token', token, { maxAge: 900000, httpOnly: true });
+      res.json({token, isAdmin: user.isAdmin})
     })
   })(req, res)
 }
